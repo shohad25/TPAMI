@@ -76,7 +76,8 @@
 %		\fontfamily{qtm}\selectfont
 %\begin{frontmatter}
 
-\markboth{Journal of \LaTeX\ Class Files,~Vol.~XX, No.~XX, Feb~2018}%
+
+\markboth{IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, ~VOL.~XX, NO.~XX, Feb~2018}%
 {Shell \MakeLowercase{\textit{et al.}}: Accelerated Magnetic Resonance Imaging by Adversarial Neural Network}
 
 %% Group authors per affiliation:
@@ -150,7 +151,7 @@ The rest of the paper is organized as follows: Section~\ref{method_section} prov
 
 %--------------------- METHOD --------------------%
 \section{Method}\label{method_section}
-We aim to address MRI reconstruction from under-sampled k-space data using DNN. We hereby present the proposed methodology as well as the network architecture.
+We aim to address MRI reconstruction from under-sampled k-space using DNN. We now present the proposed methodology and the network architecture.
 \subsection{Notations and Problem Definition}
 Let $\bm{u}$ denote the desired signal, a 2D MRI, obtained by IFFT of the complex k-space signal $s_{0}$, i.e., 
 \begin{equation}
@@ -212,7 +213,7 @@ We choose to use the Wasserstein distance as the GAN loss function (WGAN)~\cite{
 \subsection{System Architecture}
 The proposed framework is illustrated in Figure~\ref{fig:system}.
 \begin{figure}[H]
-	\centering{}\includegraphics[width=8.0cm,height=4.5cm]{include/grp2/system_chart}\caption{\label{fig:system} \textcolor{black}{\footnotesize{}{}Framework
+	\centering{}\includegraphics[width=8.0cm,height=4cm]{include/grp2/system_chart}\caption{\label{fig:system} \textcolor{black}{\footnotesize{}{}Framework
 			architecture: $G$ and $D$ are the generator and discriminator networks,
 			respectively. See text for details.}}
 \end{figure}
@@ -260,7 +261,7 @@ From each 3D volume we extracted 93 2D saggital slices. All slices were interpol
 To create k-space images for training, inverse orthonormal
 2D FFT was applied to the fully-sampled MR images. 
 %Unlike our preliminary work~\cite{shitrit2017accelerated}, which employed a sampling mask along the phase axis alone; here, we perform k-space sampling using a 2D random Gaussian mask. By this, we exploit the sparsity in both phase and frequency dimensions and are therefore able to accommodate higher sampling factors (Figure~\ref{fig:sampling_masks}). MRI reconstruction is performed using 40\%, 25\%, and 16.6\% of the original k-space data.
-We perform k-space sampling using a 2D random Gaussian mask. Thus, we exploit the sparsity in both phase and frequency dimensions and are therefore able to accommodate higher sampling factors (Figure~\ref{fig:sampling_masks}). MRI reconstruction is performed using 40\%, 25\%, and 16.6\% of the original k-space data.
+We perform k-space sampling using a 2D random Gaussian mask. Thus, we exploit the sparsity in both phase and frequency dimensions and are therefore able to accommodate higher sampling factors (Figure~\ref{fig:sampling_masks}). MRI reconstruction is performed using 40\%, 25\%, and 16.6\% of the original k-space.
 
 The generator is composed of $5$ blocks of CONV-BatchNorm-ReLU, with output channels $16,32,64,32,8,$ respectively (see Figure~\ref{fig:architectures}). The last CONV layer is composed of two output channels for real and imaginary components. The discriminator is composed of $4$ blocks of CONV-Pool-BatchNorm-LReLU with output channels $8,16,32,16$ and one fully-connected layer. All CONV layers' kernel size is $3\times3$. All weights were initialized using Xavier \cite{glorot2010understanding}. We used the RMSprop~\cite{tieleman2012lecture} solver with a fixed learning rate of $5\mathrm{e}{-6}$ and set $k_{d}$ to 1.
 
@@ -573,16 +574,19 @@ Instead, the k-space distribution, and not its IFFT, is learned and generated. M
 Until just a few years ago, CS techniques were considered the state-of-the-art for MRI reconstruction. Recently, deep learning methods, capable of learning imaging samples distribution from training datasets, were shown to obtain reconstruction with comparable or even higher quality. The strength of the proposed DNN is three-fold, combining direct k-space reconstruction, GAN architecture, and end-to-end optimization.
 This allows anatomically meaningful reconstruction with high fidelity to the original scan. Extensive comparative analysis shows that our method outperforms all other tested MRI reconstruction methods (CS and other DNN-based) for various quality metrics, showing more robustness to high acceleration factors.
 
-A key advantage of the proposed method is its short runtime at test phase (less than 10 msec per slice), which is almost two orders of magnitude faster than CS. This makes it applicable for routine uses. As training can be performed off-line, prior to the acquisition sessions, the fact that it lasts a few days has no practical relevance.
+A key advantage of the proposed method is its short runtime at test phase (less than 10 msec per slice), which is almost two orders of magnitude faster than CS. This makes it applicable for routine uses. As training can be performed off-line, prior to the acquisition sessions, its runtime has no practical relevance.
 
-Assessing clinical usability of the reconstructed data is a considerable part in the quality analysis performed as part of this research. We chose to test it by using standard tissue segmentation measures (such as Dice and MHD), as we argue that compatibility of the extracted brain regions with those obtained by using the original fully-sampled MRIs indicate fine detail reconstructions that have apparent diagnostic significance. Nevertheless, pathological cases were not considered in this study and to the best of our knowledge are seldom addressed. We believe that high quality reconstruction in the presence of brain atrophies is the true success criterion. In fact, addressing this challenge and measuring performances in this sense, should be the gold standard in future benchmarks.
+%Assessing clinical usability of the reconstructed data is an important part in conducted experiments.
+Quality analysis for assessment of the clinical usability of the reconstructed data plays a significant role in our experiments.
+We chose to test it by using standard tissue segmentation measures (such as Dice and MHD), as we argue that compatibility of the extracted brain regions with those obtained by using the original fully-sampled MRIs indicate diagnostic significance. Nevertheless, pathological cases were not considered in this study and to the best of our knowledge are seldom addressed. We believe that high quality reconstruction in the presence of brain atrophies is the true success criterion. In fact, addressing this challenge and measuring performances in this sense, should be the gold standard in future benchmarks.
 
 
 %Therefore, this measure is not a sufficient metric for fine details and general objects shape. For example, a model can provide a good reconstruction in the sense of PSNR yet with blurry edges and loss of anatomical fine details. This may significant affect diagnostic usability.
 
 %--------------------- Acknowledgment --------------------%
-\subsection{Acknowledgment}
-This study was partially supported by The Israel Science Foundation (1638/16); The Israel Defense Forces (IDF) Medical Corps and Directorate of Defense Research \& Development, Israeli Ministry of Defense (IMOD DDR\&D); Israel Ministry of Science, Technology and Space (63551).
+%\subsection{Acknowledgment}
+\subsubsection*{\textbf{Acknowledgment}}
+\small This study was partially supported by The Israel Science Foundation (1638/16); The Israel Defense Forces (IDF) Medical Corps and Directorate of Defense Research \& Development, Israeli Ministry of Defense (IMOD DDR\&D); Israel Ministry of Science, Technology and Space (63551).
 %This research is partially supported by the Israel Science Foundation (T.R.R. 1638/16 ) and the IDF Medical Corps (T.R.R.)
 
 
@@ -671,6 +675,7 @@ This study was partially supported by The Israel Science Foundation (1638/16); T
 
 
 %-----------------------------BIBLIOGRAPHY--------------------%
+\vspace{-0.3cm}
 \bibliography{paper}
 
 
